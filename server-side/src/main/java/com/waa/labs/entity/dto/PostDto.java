@@ -1,4 +1,4 @@
-package com.waa.labs.lab1.entities;
+package com.waa.labs.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class PostDto {
     private long id;
     private String title;
     private String content;
-    private String author;
+    //private User user;
 }

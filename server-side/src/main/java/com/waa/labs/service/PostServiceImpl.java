@@ -1,8 +1,8 @@
-package com.waa.labs.lab1.services;
+package com.waa.labs.service;
 
-import com.waa.labs.lab1.dao.PostRepository;
-import com.waa.labs.lab1.entities.Post;
-import com.waa.labs.lab1.entities.dto.PostDto;
+import com.waa.labs.entity.Post;
+import com.waa.labs.entity.dto.PostDto;
+import com.waa.labs.repository.PostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,15 +30,26 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    public List<PostDto> getPostsByAuthor(String author) {
-        return postRepository.findByAuthor(author)
+    @Override
+    public List<PostDto> getPostsByAuthorName(String author) {
+        return postRepository.findByUser_Name(author)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PostDto> getPostsByAuthorId(Long id) {
+        return postRepository.findByUser_Id(id)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public List<PostDto> getPostsByAuthorContaining(String text) {
-        return postRepository.findByAuthorContaining(text)
+        return postRepository.findByUser_NameContainingIgnoreCase(text)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -57,9 +68,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(long id) {
-        //FIXME
         postRepository.findById(id).ifPresent(postRepository::delete);
     }
+
 
     private PostDto convertToDto(Post post) {
         return modelMapper.map(post, PostDto.class);

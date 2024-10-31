@@ -1,8 +1,8 @@
-package com.waa.labs.lab1.controllers;
+package com.waa.labs.controller;
 
-import com.waa.labs.lab1.entities.Post;
-import com.waa.labs.lab1.entities.dto.PostDto;
-import com.waa.labs.lab1.services.PostService;
+import com.waa.labs.entity.Post;
+import com.waa.labs.entity.dto.PostDto;
+import com.waa.labs.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostDto>> getAllPosts(
-            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String authorName,
             @RequestParam(required = false) String text
     ) {
-        if (author != null) {
-            return ResponseEntity.ok(postService.getPostsByAuthor(author));
+        if (authorName != null) {
+            return ResponseEntity.ok(postService.getPostsByAuthorName(authorName));
         } else if (text != null) {
             return ResponseEntity.ok(postService.getPostsByAuthorContaining(text));
         } else {

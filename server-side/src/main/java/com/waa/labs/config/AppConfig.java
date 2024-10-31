@@ -1,4 +1,4 @@
-package com.waa.labs.lab1.config;
+package com.waa.labs.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

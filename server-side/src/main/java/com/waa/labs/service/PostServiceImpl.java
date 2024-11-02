@@ -46,6 +46,14 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PostDto> getPostsByTitle(String title) {
+        return postRepository.findByTitle(title)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<PostDto> getPostsByAuthorContaining(String text) {
@@ -68,7 +76,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(long id) {
-        postRepository.findById(id).ifPresent(postRepository::delete);
+        postRepository.deleteById(id);
     }
 
 

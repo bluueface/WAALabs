@@ -12,5 +12,9 @@ public interface UserService {
 
     User createUser(User user);
 
-    List<User> getUsersWithMoreThanOnePost();
+    void delete(long id);
+
+    List<User> getUsersWithMoreThanNPost(int numberOfPosts);
+
+    List<User> getUsersByPostTitle(String title);
 }

@@ -21,4 +21,6 @@ public interface PostService {
 
     List<PostDto> getPostsByAuthorId(Long id);
 
+    List<PostDto> getPostsByTitle(String title);
+
 }

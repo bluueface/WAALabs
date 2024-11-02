@@ -1,5 +1,6 @@
 package com.waa.labs;
 
+import com.waa.labs.entity.Comment;
 import com.waa.labs.entity.Post;
 import com.waa.labs.entity.User;
 import com.waa.labs.service.UserService;
@@ -19,18 +20,32 @@ public class ServerSideApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServerSideApplication.class, args);
 
-        User user = new User();
-        user.setName("Aziz");
+        User user1 = new User();
+        user1.setName("Aziz");
+
+        User user2 = new User();
+        user2.setName("Aziz");
+
+
         Post post1 = new Post();
         post1.setTitle("Help");
         post1.setContent("This is a help");
         Post post2 = new Post();
         post2.setTitle("Advice");
         post2.setContent("This is a advice");
-        user.addPost(post1);
-        user.addPost(post2);
+        user1.addPost(post1);
+        user1.addPost(post2);
 
-        userService.createUser(user);
+        Comment comment1 = new Comment();
+        comment1.setName("comment1");
+        Comment comment2 = new Comment();
+        comment2.setName("comment2");
+        post1.addComment(comment1);
+        post2.addComment(comment2);
+
+
+        userService.createUser(user1);
+        userService.createUser(user2);
     }
 
 }

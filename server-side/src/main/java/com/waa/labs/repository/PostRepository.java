@@ -14,4 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUser_Id(Long id);
 
     List<Post> findByUser_NameContainingIgnoreCase(String text);
+
+    List<Post> findByTitle(String text);
 }

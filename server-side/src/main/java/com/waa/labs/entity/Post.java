@@ -1,18 +1,13 @@
 package com.waa.labs.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +21,31 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id) &&
-                Objects.equals(title, post.title) &&
-                Objects.equals(content, post.content);
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    public Post() {
+        comments = new ArrayList<>();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, content);
+    public void addComment(Comment comment) {
+        comment.setPost(this);
+        comments.add(comment);
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Post post = (Post) o;
+//        return Objects.equals(id, post.id) &&
+//                Objects.equals(title, post.title) &&
+//                Objects.equals(content, post.content);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, title, content);
+//    }
 }

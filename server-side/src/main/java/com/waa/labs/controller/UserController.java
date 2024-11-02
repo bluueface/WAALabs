@@ -47,7 +47,24 @@ public class UserController {
     }
 
     @GetMapping("/with-posts")
-    public ResponseEntity<List<User>> getUsersWithMoreThanOnePost() {
-        return ResponseEntity.ok(userService.getUsersWithMoreThanOnePost());
+    public ResponseEntity<List<User>> getUsersWithMoreThanNPost(@RequestParam int numberOfPosts) {
+        return ResponseEntity.ok(userService.getUsersWithMoreThanNPost(numberOfPosts));
     }
+
+    @GetMapping("/post-title")
+    public ResponseEntity<List<User>> getUsersByPostTitle(@RequestParam String title) {
+        return ResponseEntity.ok(userService.getUsersByPostTitle(title));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable("id") long id) {
+        if (userService.getById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // localhost:8080/api/v1/users/111/posts/1/comments/1
+
 }

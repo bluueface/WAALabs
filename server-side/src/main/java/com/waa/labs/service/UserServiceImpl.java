@@ -35,8 +35,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersWithMoreThanOnePost() {
-        return userRepository.findUsersWithMoreThanOnePost();
+    public void delete(long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<User> getUsersWithMoreThanNPost(int numberOfPosts) {
+        return userRepository.findUsersWithMoreThanNPost(numberOfPosts);
+    }
+
+    @Override
+    public List<User> getUsersByPostTitle(String title) {
+        return userRepository.findUsersByPostTitle(title);
     }
 
 

@@ -1,5 +1,6 @@
 package com.waa.labs.service;
 
+import com.waa.labs.config.aop.ExecutionTime;
 import com.waa.labs.entity.User;
 import com.waa.labs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final LoggerService loggerService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, LoggerService loggerService) {
         this.userRepository = userRepository;
+        this.loggerService = loggerService;
     }
 
 
@@ -25,18 +28,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @ExecutionTime
     public Optional<User> getById(long id) {
         return userRepository.findById(id);
     }
 
     @Override
     public User createUser(User user) {
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        loggerService.logOperation(String.format("Created user with ID:%d", savedUser.getId()));
+        return savedUser;
     }
 
     @Override
     public void delete(long id) {
         userRepository.deleteById(id);
+        loggerService.logOperation(String.format("Deleted user with ID:%d", id));
     }
 
     @Override

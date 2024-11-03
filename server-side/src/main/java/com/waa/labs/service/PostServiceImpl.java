@@ -16,11 +16,13 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final LoggerService loggerService;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, LoggerService loggerService) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
+        this.loggerService = loggerService;
     }
 
     @Override
@@ -71,12 +73,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post save(Post post) {
-        return postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        loggerService.logOperation(String.format("Created post with ID:%d", savedPost.getId()));
+        return savedPost;
     }
 
     @Override
     public void delete(long id) {
         postRepository.deleteById(id);
+        loggerService.logOperation(String.format("Deleted post with ID:%d", id));
     }
 
 

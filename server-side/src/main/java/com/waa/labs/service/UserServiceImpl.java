@@ -1,6 +1,6 @@
 package com.waa.labs.service;
 
-import com.waa.labs.config.aop.ExecutionTime;
+import com.waa.labs.aspect.ExecutionTime;
 import com.waa.labs.entity.User;
 import com.waa.labs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

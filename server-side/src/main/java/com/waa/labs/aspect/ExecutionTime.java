@@ -1,4 +1,4 @@
-package com.waa.labs.config.aop;
+package com.waa.labs.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.waa.labs.config.aop;
+package com.waa.labs.aspect;
 
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExecutionTimeAspect {
 
-    @Around("@annotation(ExecutionTime)")
+    @Around("@annotation(com.waa.labs.aspect.ExecutionTime)")
     public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();

@@ -4,10 +4,11 @@ import PostDetails from "./PostDetails";
 import { PostService } from "../services/postService";
 import { PostInterface } from "../utils/types";
 import AddPost from "./AddPost";
+import { usePostContext } from "../context/PostContext";
 
 const Dashboard = () => {
+  const { selectedPostId, setSelectedPostId } = usePostContext();
   const [posts, setPosts] = useState<PostInterface[]>([]);
-  const [selectedPostId, setSelectedPostId] = useState<number | undefined>();
   const [title, setTitle] = useState<string>("");
   const [reload, setReload] = useState<boolean>(false);
 

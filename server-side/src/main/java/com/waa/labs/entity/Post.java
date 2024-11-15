@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -34,18 +35,18 @@ public class Post {
         comments.add(comment);
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Post post = (Post) o;
-//        return Objects.equals(id, post.id) &&
-//                Objects.equals(title, post.title) &&
-//                Objects.equals(content, post.content);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, title, content);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(content, post.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content);
+    }
 }

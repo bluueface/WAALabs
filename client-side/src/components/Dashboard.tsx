@@ -1,30 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Posts from "./Posts";
 import PostDetails from "./PostDetails";
-import { DATA } from "../data";
-
-export interface PostInterface {
-  id: number;
-  title: string;
-  author: string;
-}
+import { PostService } from "../services/postService";
+import { PostInterface } from "../utils/types";
+import AddPost from "./AddPost";
 
 const Dashboard = () => {
-  const [posts, setPosts] = useState<PostInterface[]>(DATA);
-  const [selectedPost, setSelectedPost] = useState<PostInterface>();
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [posts, setPosts] = useState<PostInterface[]>([]);
+  const [selectedPostId, setSelectedPostId] = useState<number | undefined>();
   const [title, setTitle] = useState<string>("");
+  const [reload, setReload] = useState<boolean>(false);
+
+  const fetchPost = () => {
+    PostService.getAllPosts().then((res) => {
+      setPosts(res);
+    });
+  };
 
   useEffect(() => {
-    if (selectedPost) {
-      setIsDisabled(false);
+    if (reload) {
+      fetchPost();
+      setReload(false);
     }
-  }, [selectedPost]);
+  }, [reload]);
+
+  useEffect(() => {
+    if (!selectedPostId) {
+      fetchPost();
+    }
+  }, [selectedPostId]);
 
   const handleChangeButtonClicked = () => {
     const newPosts = [...posts];
-    const postTochane = newPosts.find((post) => post.id === selectedPost?.id);
-    postTochane!.author = title;
+    const postTochane = newPosts.find((post) => post.id === selectedPostId);
+    postTochane!.title = title;
     setPosts(newPosts);
   };
 
@@ -34,24 +43,34 @@ const Dashboard = () => {
 
   return (
     <div className="p-2">
-      <Posts posts={posts} setSelectedPost={setSelectedPost} />
-      <div className="flex gap-4 py-6">
-        <input
-          placeholder="Enter title"
-          className="px-2 text-black"
-          onChange={handleTitleChange}
-        />
-        <button
-          className={`${
-            isDisabled ? "bg-gray-400" : "bg-green-600"
-          } p-2 rounded`}
-          disabled={!selectedPost}
-          onClick={handleChangeButtonClicked}
-        >
-          Change
-        </button>
+      <Posts posts={posts} setSelectedPostId={setSelectedPostId} />
+      {posts.length > 0 && (
+        <div className="flex gap-4 py-6">
+          <input
+            placeholder="Enter title"
+            className="px-2 text-black"
+            onChange={handleTitleChange}
+          />
+          <button
+            className={`${
+              selectedPostId ? "bg-gray-400" : "bg-green-600"
+            } p-2 rounded`}
+            disabled={!selectedPostId}
+            onClick={handleChangeButtonClicked}
+          >
+            Change
+          </button>
+        </div>
+      )}
+      <div className="flex flex-row gap-4">
+        <AddPost setReload={setReload} />
+        {selectedPostId && (
+          <PostDetails
+            postId={selectedPostId}
+            setSelectedPostId={setSelectedPostId}
+          />
+        )}
       </div>
-      {selectedPost && <PostDetails post={selectedPost} />}
     </div>
   );
 };

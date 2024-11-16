@@ -1,77 +1,31 @@
-import React, { useEffect, useState } from "react";
-import Posts from "./Posts";
-import PostDetails from "./PostDetails";
-import { PostService } from "../services/postService";
-import { PostInterface } from "../utils/types";
-import AddPost from "./AddPost";
-import { usePostContext } from "../context/PostContext";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { selectedPostId, setSelectedPostId } = usePostContext();
-  const [posts, setPosts] = useState<PostInterface[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [reload, setReload] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const fetchPost = () => {
-    PostService.getAllPosts().then((res) => {
-      setPosts(res);
-    });
+  const handlePostsBtnClicked = () => {
+    navigate("/posts");
   };
 
-  useEffect(() => {
-    if (reload) {
-      fetchPost();
-      setReload(false);
-    }
-  }, [reload]);
-
-  useEffect(() => {
-    if (!selectedPostId) {
-      fetchPost();
-    }
-  }, [selectedPostId]);
-
-  const handleChangeButtonClicked = () => {
-    const newPosts = [...posts];
-    const postTochane = newPosts.find((post) => post.id === selectedPostId);
-    postTochane!.title = title;
-    setPosts(newPosts);
-  };
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+  const handleAddPostBtnClicked = () => {
+    navigate("/posts/new-post");
   };
 
   return (
-    <div className="p-2">
-      <Posts posts={posts} setSelectedPostId={setSelectedPostId} />
-      {posts.length > 0 && (
-        <div className="flex gap-4 py-6">
-          <input
-            placeholder="Enter title"
-            className="px-2 text-black"
-            onChange={handleTitleChange}
-          />
-          <button
-            className={`${
-              selectedPostId ? "bg-gray-400" : "bg-green-600"
-            } p-2 rounded`}
-            disabled={!selectedPostId}
-            onClick={handleChangeButtonClicked}
-          >
-            Change
-          </button>
-        </div>
-      )}
-      <div className="flex flex-row gap-4">
-        <AddPost setReload={setReload} />
-        {selectedPostId && (
-          <PostDetails
-            postId={selectedPostId}
-            setSelectedPostId={setSelectedPostId}
-          />
-        )}
-      </div>
+    <div className="flex flex-col items-center justify-center flex-grow gap-4 p-4">
+      <button
+        className="bg-blue-600 p-2 rounded w-44"
+        onClick={handlePostsBtnClicked}
+      >
+        Posts
+      </button>
+      <button
+        className="bg-green-600 p-2 rounded w-44"
+        onClick={handleAddPostBtnClicked}
+      >
+        Add Post
+      </button>
     </div>
   );
 };

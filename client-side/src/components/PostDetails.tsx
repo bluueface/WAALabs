@@ -1,25 +1,23 @@
 import { useEffect, useState } from "react";
 import { PostInterface } from "../utils/types";
 import { PostService } from "../services/postService";
+import { usePostContext } from "../context/PostContext";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-  postId: number;
-  setSelectedPostId: (value?: number) => void;
-}
-const PostDetails: React.FunctionComponent<Props> = ({
-  postId,
-  setSelectedPostId,
-}) => {
+const PostDetails = () => {
+  const { selectedPostId, setReload } = usePostContext();
+  const navigate = useNavigate();
   const [post, setPost] = useState<PostInterface>();
 
   useEffect(() => {
-    PostService.getPostById(postId).then((res) => setPost(res));
-  }, [postId]);
+    PostService.getPostById(selectedPostId!).then((res) => setPost(res));
+  }, [selectedPostId]);
 
   const handleDeleteButtonClicked = () => {
-    PostService.deletePostById(postId).then((res) => {
-      setSelectedPostId(undefined);
-      console.log(`Post with id ${postId} deleted successfully`);
+    PostService.deletePostById(selectedPostId!).then((res) => {
+      console.log(`Post with id ${selectedPostId} deleted successfully`);
+      setReload(true);
+      navigate("/posts");
     });
   };
 

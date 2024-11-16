@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { PostInterface, UserInterface } from "../utils/types";
 import { UserService } from "../services/userService";
 import { PostService } from "../services/postService";
+import { usePostContext } from "../context/PostContext";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-  setReload: (value: boolean) => void;
-}
+const AddPost = () => {
+  const { setReload } = usePostContext();
+  const navigate = useNavigate();
 
-const AddPost: React.FunctionComponent<Props> = ({ setReload }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const authorRef = useRef<HTMLSelectElement>(null);
@@ -29,11 +30,12 @@ const AddPost: React.FunctionComponent<Props> = ({ setReload }) => {
 
     PostService.addPost(newPost).then((res) => {
       if (res) {
-        setReload(true);
         if (titleRef.current) titleRef.current.value = "";
         if (contentRef.current) contentRef.current.value = "";
         if (authorRef.current) authorRef.current.value = "";
       }
+      setReload(true);
+      navigate("/");
     });
   };
 
